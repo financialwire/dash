@@ -40,14 +40,13 @@ class CategoryResource extends Resource
                             ->label('Cor')
                             ->required(),
 
-                        // TODO: Implement icon picker input
-                        // Forms\Components\ToggleButtons::make('icon')
-                        //     ->label('Ícone')
-                        //     ->required()
-                        //     ->inline()
-                        //     ->options(get_avaliable_icons())
-                        //     ->icons(get_avaliable_icons(true))
-                        //     ->columnSpanFull(),
+                        Forms\Components\ToggleButtons::make('icon')
+                            ->label('Ícone')
+                            ->required()
+                            ->inline()
+                            ->options(get_avaliable_icons())
+                            ->icons(get_avaliable_icons(icons: true))
+                            ->columnSpanFull(),
 
                         Forms\Components\Fieldset::make('Informações Adicionais')
                             ->columns(3)
