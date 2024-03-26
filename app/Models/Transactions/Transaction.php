@@ -21,13 +21,14 @@ class Transaction extends Model
         'finished',
         'description',
         'account_id',
-        'category_id'
+        'category_id',
+        'attachment',
     ];
 
     protected function casts(): array
     {
         return [
-            'transaction_type' => TransactionType::class
+            'transaction_type' => TransactionType::class,
         ];
     }
 

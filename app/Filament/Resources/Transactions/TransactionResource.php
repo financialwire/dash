@@ -81,6 +81,13 @@ class TransactionResource extends Resource
                             ->inline()
                             ->boolean(),
 
+                        Forms\Components\FileUpload::make('attachment')
+                            ->label('Anexo')
+                            ->openable()
+                            ->deletable()
+                            ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                            ->columnSpanFull(),
+
                         Forms\Components\Fieldset::make('Informações Adicionais')
                             ->columnSpanFull()
                             ->hidden(fn (?Transaction $record): bool => $record === null)
