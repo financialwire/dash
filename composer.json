@@ -13,6 +13,7 @@
         "hydrat/filament-table-layout-toggle": "^1.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "leandrocfe/filament-ptbr-form-fields": "^3.0",
         "livewire/livewire": "^3.4",
         "owenvoke/blade-fontawesome": "^2.6"
     },

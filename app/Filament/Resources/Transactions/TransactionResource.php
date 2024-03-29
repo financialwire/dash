@@ -44,7 +44,7 @@ class TransactionResource extends Resource
                             ->relationship(
                                 name: 'account',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn(Builder $query) => $query
+                                modifyQueryUsing: fn (Builder $query) => $query
                                     ->where('user_id', auth()->user()->id)
                             )
                             ->native(false)
@@ -54,39 +54,52 @@ class TransactionResource extends Resource
                             ->relationship('category', 'name')
                             ->native(false)
                             ->required(),
-                        Forms\Components\Select::make('transaction_type')
-                            ->label('Tipo de transação')
-                            ->required()
-                            ->native(false)
-                            ->options(TransactionType::class),
+
                         Money::make('amount')
                             ->label('Total')
                             ->required()
-                            ->formatStateUsing(fn(?int $state) => number_format($state / 100, 2, ',', '.'))
-                            ->dehydrateStateUsing(fn(?string $state): ?int => str($state)->replace(['.', ','], '')->toInteger()),
+                            ->formatStateUsing(fn (?int $state) => number_format($state / 100, 2, ',', '.'))
+                            ->dehydrateStateUsing(fn (?string $state): ?int => str($state)->replace(['.', ','], '')->toInteger()),
                         Forms\Components\DatePicker::make('date')
                             ->label('Data')
                             ->required(),
                         Forms\Components\TextInput::make('description')
                             ->label('Descrição')
+                            ->placeholder('Ex: Conta de Luz')
                             ->required()
-                            ->maxLength(255),
-                        Forms\Components\Toggle::make('finished')
-                            ->label('Finalizada')
-                            ->inline(false),
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
+                        Forms\Components\ToggleButtons::make('transaction_type')
+                            ->label('Tipo de transação')
+                            ->required()
+                            ->inline()
+                            ->options(TransactionType::class),
+
+                        Forms\Components\ToggleButtons::make('finished')
+                            ->label('Recebida/Paga')
+                            ->inline()
+                            ->boolean(),
+
+                        Forms\Components\FileUpload::make('attachment')
+                            ->label('Anexo')
+                            ->openable()
+                            ->deletable()
+                            ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                            ->columnSpanFull(),
 
                         Forms\Components\Fieldset::make('Informações Adicionais')
                             ->columnSpanFull()
-                            ->hidden(fn(?Transaction $record): bool => $record === null)
+                            ->hidden(fn (?Transaction $record): bool => $record === null)
                             ->columns(2)
                             ->schema([
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label('Criado em')
-                                    ->content(fn($record) => $record->created_at->format('d/m/Y H:i')),
+                                    ->content(fn ($record) => $record->created_at->format('d/m/Y H:i')),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Atualizado em')
-                                    ->content(fn($record) => $record->updated_at->format('d/m/Y H:i')),
+                                    ->content(fn ($record) => $record->updated_at->format('d/m/Y H:i')),
                             ])
                     ]),
             ]);
@@ -97,22 +110,22 @@ class TransactionResource extends Resource
         $livewire = $table->getLivewire();
 
         return $table
-            ->modifyQueryUsing(fn(Builder $query) => $query->where('user_id', auth()->user()->id))
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->defaultSort('date', 'desc')
             ->defaultGroup('date')
             ->columns(
                 $livewire->isGridLayout()
-                ? static::getGridTableColumns()
-                : static::getTableColumns()
+                    ? static::getGridTableColumns()
+                    : static::getTableColumns()
             )
             ->contentGrid(
-                fn() => $livewire->isTableLayout()
-                ? null
-                : [
-                    'md' => 2,
-                    'lg' => 3,
-                    'xl' => 4,
-                ]
+                fn () => $livewire->isTableLayout()
+                    ? null
+                    : [
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ]
             )
             ->filters([
                 Tables\Filters\Filter::make('date')
@@ -124,14 +137,14 @@ class TransactionResource extends Resource
                             ->label('Data final')
                             ->default(now()->endOfMonth()),
                     ])
-                    ->query(fn(Builder $query, array $data): Builder => $query->whereBetween('date', [$data['startDate'] ?? now()->startOfMonth(), $data['endDate'] ?? now()->endOfMonth()])),
+                    ->query(fn (Builder $query, array $data): Builder => $query->whereBetween('date', [$data['startDate'] ?? now()->startOfMonth(), $data['endDate'] ?? now()->endOfMonth()])),
 
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Categorias')
                     ->relationship(
                         name: 'category',
                         titleAttribute: 'name',
-                        modifyQueryUsing: fn($query) => $query->where('user_id', auth()->user()->id)
+                        modifyQueryUsing: fn ($query) => $query->where('user_id', auth()->user()->id)
                     )
                     ->multiple()
                     ->preload(),
@@ -141,7 +154,7 @@ class TransactionResource extends Resource
                     ->relationship(
                         name: 'account',
                         titleAttribute: 'name',
-                        modifyQueryUsing: fn($query) => $query->where('user_id', auth()->user()->id)
+                        modifyQueryUsing: fn ($query) => $query->where('user_id', auth()->user()->id)
                     )
                     ->multiple()
                     ->preload(),
@@ -149,18 +162,18 @@ class TransactionResource extends Resource
                 Tables\Filters\Filter::make('finished')
                     ->label('Finalizada')
                     ->toggle()
-                    ->query(fn(Builder $query) => $query->where('finished', true))
+                    ->query(fn (Builder $query) => $query->where('finished', true))
             ])
             ->groups([
                 Tables\Grouping\Group::make('date')
                     ->label('Data')
-                    ->getTitleFromRecordUsing(fn($record): ?string => date('d/m/Y', strtotime($record->date))),
+                    ->getTitleFromRecordUsing(fn ($record): ?string => date('d/m/Y', strtotime($record->date))),
                 Tables\Grouping\Group::make('category_id')
                     ->label('Categoria')
-                    ->getTitleFromRecordUsing(fn(?Transaction $record): ?string => Category::find($record->category_id)->name),
+                    ->getTitleFromRecordUsing(fn (?Transaction $record): ?string => Category::find($record->category_id)->name),
                 Tables\Grouping\Group::make('account_id')
                     ->label('Conta')
-                    ->getTitleFromRecordUsing(fn(?Transaction $record): ?string => Account::find($record->account_id)->name),
+                    ->getTitleFromRecordUsing(fn (?Transaction $record): ?string => Account::find($record->account_id)->name),
             ])
             ->contentGrid([
                 'md' => 2,
@@ -218,8 +231,8 @@ class TransactionResource extends Resource
                             ->label('Categoria')
                             ->searchable()
                             ->badge()
-                            ->icon(fn($record) => $record->category->icon)
-                            ->color(fn($record) => Color::hex($record->category->color))
+                            ->icon(fn ($record) => $record->category->icon)
+                            ->color(fn ($record) => Color::hex($record->category->color))
                             ->alignEnd(),
 
                         MoneyColumn::make('amount')
@@ -259,8 +272,8 @@ class TransactionResource extends Resource
                 ->label('Categoria')
                 ->searchable()
                 ->badge()
-                ->icon(fn($record) => $record->category->icon)
-                ->color(fn($record) => Color::hex($record->category->color)),
+                ->icon(fn ($record) => $record->category->icon)
+                ->color(fn ($record) => Color::hex($record->category->color)),
             Tables\Columns\TextColumn::make('transaction_type')
                 ->label('Tipo')
                 ->badge()
