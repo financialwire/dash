@@ -22,9 +22,23 @@ class EditProfile extends BasePage
                             ->description('Seus dados de usuário')
                             ->icon('heroicon-o-user-circle')
                             ->aside()
+                            ->columns(4)
                             ->schema([
-                                $this->getNameFormComponent(),
-                                $this->getEmailFormComponent(),
+                                Forms\Components\Group::make()
+                                    ->columnSpan(3)
+                                    ->schema([
+                                        $this->getNameFormComponent(),
+                                        $this->getEmailFormComponent(),
+                                    ]),
+
+                                Forms\Components\FileUpload::make('avatar')
+                                    ->label('Avatar')
+                                    ->required()
+                                    ->avatar()
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageEditorMode(2)
+                                    ->directory('users'),
                             ]),
 
                         Forms\Components\Section::make('Segurança')
