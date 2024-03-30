@@ -33,6 +33,7 @@ class DashPanelProvider extends PanelProvider
             ->passwordReset()
             ->profile(page: EditProfile::class, isSimple: false)
             ->topNavigation()
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Purple,
             ])
