@@ -51,7 +51,12 @@ class TransactionResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('category_id')
                             ->label('Categoria')
-                            ->relationship('category', 'name')
+                            ->relationship(
+                                name: 'category',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query
+                                    ->where('user_id', auth()->user()->id)
+                            )
                             ->native(false)
                             ->required(),
 
