@@ -9,6 +9,8 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Guava\FilamentIconPicker\Forms\IconPicker;
@@ -47,21 +49,6 @@ class CategoryResource extends Resource
                         'default' => 3,
                         'xl' => 6,
                     ]),
-
-                Forms\Components\Fieldset::make('Informações Adicionais')
-                    ->columns(3)
-                    ->hidden(fn (?Category $record): bool => $record === null)
-                    ->schema([
-                        Forms\Components\Placeholder::make('created_at')
-                            ->label('Criado em')
-                            ->content(fn (Category $record): string => $record->created_at?->format('d/m/Y H:i') ?? 'Nunca'),
-                        Forms\Components\Placeholder::make('updated_at')
-                            ->label('Atualizado em')
-                            ->content(fn (Category $record): string => $record->updated_at?->format('d/m/Y H:i') ?? 'Nunca'),
-                        Forms\Components\Placeholder::make('deleted_at')
-                            ->label('Excluído em')
-                            ->content(fn (Category $record): string => $record->deleted_at?->format('d/m/Y H:i') ?? 'Nunca'),
-                    ])
             ]);
     }
 
@@ -71,36 +58,48 @@ class CategoryResource extends Resource
             ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->defaultSort('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nome')
-                    ->searchable()
-                    ->sortable()
-                    ->badge()
-                    ->icon(fn ($record) => $record->icon)
-                    ->color(fn ($record) => Color::hex($record->color)),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Criado em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Atualizado em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->label('Excluído em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\IconColumn::make('icon')
+                        ->alignCenter()
+                        ->icon(fn (string $state): string => $state)
+                        ->color(fn ($record) => Color::hex($record->color))
+                        ->size(Tables\Columns\IconColumn\IconColumnSize::TwoExtraLarge),
+                    Tables\Columns\TextColumn::make('name')
+                        ->label('Nome')
+                        ->searchable()
+                        ->sortable()
+                        ->weight(FontWeight::SemiBold)
+                        ->size(Tables\Columns\TextColumn\TextColumnSize::Medium)
+                        ->alignCenter(),
+                ])->space(2),
+            ])
+            ->contentGrid([
+                'md' => 2,
+                'xl' => 4,
+            ])
+            ->paginated([
+                12,
+                24,
+                36,
+                'all',
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                    ->native(false),
             ])
+            ->actionsAlignment('right')
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->badge(),
+                Tables\Actions\DeleteAction::make()
+                    ->badge(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])->badge()
+                    ->color('gray')
+                    ->size('sm')
+                    ->outlined(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
