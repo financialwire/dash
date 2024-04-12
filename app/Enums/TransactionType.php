@@ -7,7 +7,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum TransactionType: string implements HasLabel, HasIcon, HasColor
+enum TransactionType: string implements HasColor, HasIcon, HasLabel
 {
     case Expense = 'expense';
     case Income = 'income';

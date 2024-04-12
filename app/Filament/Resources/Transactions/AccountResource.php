@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Transactions;
 
 use App\Filament\Resources\Transactions\AccountResource\Pages;
-use App\Filament\Resources\Transactions\AccountResource\RelationManagers;
 use App\Models\Transactions\Account;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AccountResource extends Resource
 {
@@ -34,23 +32,23 @@ class AccountResource extends Resource
                     ->maxLength(255),
 
                 Forms\Components\Fieldset::make('Informações Adicionais')
-                    ->hidden(fn(?Account $record): bool => is_null($record))
+                    ->hidden(fn (?Account $record): bool => is_null($record))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Criado em:')
-                            ->content(fn(Account $record): string => $record->created_at->format('d/m/Y H:i')),
+                            ->content(fn (Account $record): string => $record->created_at->format('d/m/Y H:i')),
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Atualizado em:')
-                            ->content(fn(Account $record): string => $record->updated_at->format('d/m/Y H:i')),
-                    ])
+                            ->content(fn (Account $record): string => $record->updated_at->format('d/m/Y H:i')),
+                    ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn(Builder $query) => $query->where('user_id', auth()->user()->id))
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome')

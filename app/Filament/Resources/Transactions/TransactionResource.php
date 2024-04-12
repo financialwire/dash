@@ -3,10 +3,9 @@
 namespace App\Filament\Resources\Transactions;
 
 use App\Enums\TransactionType;
+use App\Filament\Exports\Transactions\TransactionExporter;
 use App\Filament\Resources\Transactions\TransactionResource\Pages;
 use App\Filament\Resources\Transactions\TransactionResource\Widgets;
-use App\Filament\Resources\Transactions\TransactionResource\RelationManagers;
-use App\Filament\Exports\Transactions\TransactionExporter;
 use App\Models\Transactions\Account;
 use App\Models\Transactions\Category;
 use App\Models\Transactions\Transaction;
@@ -19,7 +18,6 @@ use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 
 class TransactionResource extends Resource
@@ -105,7 +103,7 @@ class TransactionResource extends Resource
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Atualizado em')
                                     ->content(fn ($record) => $record->updated_at->format('d/m/Y H:i')),
-                            ])
+                            ]),
                     ]),
             ]);
     }
@@ -167,7 +165,7 @@ class TransactionResource extends Resource
                 Tables\Filters\Filter::make('finished')
                     ->label('Finalizada')
                     ->toggle()
-                    ->query(fn (Builder $query) => $query->where('finished', true))
+                    ->query(fn (Builder $query) => $query->where('finished', true)),
             ])
             ->groups([
                 Tables\Grouping\Group::make('date')
@@ -202,10 +200,10 @@ class TransactionResource extends Resource
                     ->label('Exportar')
                     ->exporter(TransactionExporter::class)
                     ->icon('heroicon-s-document-arrow-up')
-                    ->color('primary')
+                    ->color('primary'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                Tables\Actions\CreateAction::make(),
             ]);
     }
 
@@ -214,7 +212,7 @@ class TransactionResource extends Resource
         return [
             Tables\Columns\Layout\Stack::make([
                 Tables\Columns\Layout\Grid::make([
-                    'lg' => 2
+                    'lg' => 2,
                 ])
                     ->schema([
                         Tables\Columns\TextColumn::make('date')
@@ -296,7 +294,7 @@ class TransactionResource extends Resource
                 ->label('Atualizado em')
                 ->dateTime('d/m/Y H:i')
                 ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true)
+                ->toggleable(isToggledHiddenByDefault: true),
         ];
     }
 
@@ -320,7 +318,7 @@ class TransactionResource extends Resource
     public static function getWidgets(): array
     {
         return [
-            Widgets\TransactionsOverview::class
+            Widgets\TransactionsOverview::class,
         ];
     }
 

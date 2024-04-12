@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Transactions\TransactionResource\Pages;
 use App\Enums\TransactionType;
 use App\Filament\Resources\Transactions\TransactionResource;
 use App\Filament\Resources\Transactions\TransactionResource\Widgets;
-use Filament\Actions;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -14,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ListTransactions extends ListRecords
 {
-    use HasToggleableTable, ExposesTableToWidgets;
+    use ExposesTableToWidgets, HasToggleableTable;
 
     protected static string $resource = TransactionResource::class;
 
@@ -30,7 +29,7 @@ class ListTransactions extends ListRecords
             $tabs[$transactionType->value] = Tab::make()
                 ->label($transactionType->getPluralLabel())
                 ->icon($transactionType->getIcon())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('transaction_type', $transactionType));
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('transaction_type', $transactionType));
         }
 
         return $tabs;
@@ -46,7 +45,7 @@ class ListTransactions extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            Widgets\TransactionsOverview::class
+            Widgets\TransactionsOverview::class,
         ];
     }
 }

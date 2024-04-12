@@ -42,8 +42,8 @@ class TodayTransactions extends BaseWidget
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoria')
                     ->badge()
-                    ->icon(fn($record) => $record->category->icon)
-                    ->color(fn($record) => Color::hex($record->category->color))
+                    ->icon(fn ($record) => $record->category->icon)
+                    ->color(fn ($record) => Color::hex($record->category->color))
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('transaction_type')
                     ->label('Tipo')
@@ -63,7 +63,7 @@ class TodayTransactions extends BaseWidget
                 Tables\Actions\Action::make('all')
                     ->label('Ver Mais')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(TransactionResource::getUrl('index'))
+                    ->url(TransactionResource::getUrl('index')),
             ]);
     }
 }

@@ -53,14 +53,14 @@ class Dashboard extends BaseDashboard
                 ->icon('heroicon-m-x-circle')
                 ->size(ActionSize::ExtraSmall)
                 ->hidden($this->checkIfFilterFormHasFilledFields())
-                ->action($this->resetFilterFormFields())
+                ->action($this->resetFilterFormFields()),
         ];
     }
 
     private function checkIfFilterFormHasFilledFields(): Closure
     {
-        return fn(Livewire $livewire) => collect($livewire->filters)
-            ->filter(fn($filter) => !is_null($filter))
+        return fn (Livewire $livewire) => collect($livewire->filters)
+            ->filter(fn ($filter) => !is_null($filter))
             ->count() == 0;
     }
 
@@ -68,7 +68,7 @@ class Dashboard extends BaseDashboard
     {
         return function (Livewire $livewire) {
             collect($livewire->filters)
-                ->map(fn($filter, $key) => $livewire->filters[$key] = null);
+                ->map(fn ($filter, $key) => $livewire->filters[$key] = null);
 
             Notification::make()
                 ->title('Filtros limpados com sucesso!')

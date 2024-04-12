@@ -53,7 +53,7 @@ class CategoriesChart extends ChartWidget
 
     protected function getOptions(): RawJs
     {
-        return RawJs::make(<<<JS
+        return RawJs::make(<<<'JS'
             {
                 scales: {
                     y: {display: false},

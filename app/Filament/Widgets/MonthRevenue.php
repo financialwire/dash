@@ -30,12 +30,12 @@ class MonthRevenue extends ChartWidget
         $income = $this->getPeriodAmount($startDate, $endDate, $preview, $accountId, TransactionType::Income);
         $expense = $this->getPeriodAmount($startDate, $endDate, $preview, $accountId, TransactionType::Expense);
 
-        $expense->each(fn($period) => $period->aggregate = -$period->aggregate);
+        $expense->each(fn ($period) => $period->aggregate = -$period->aggregate);
 
-        $data = $income->concat($expense)->groupBy('new_date')->map(fn($items) => [
+        $data = $income->concat($expense)->groupBy('new_date')->map(fn ($items) => [
             'date' => $items->first()->new_date,
             'aggregate' => $items->sum('aggregate') / 100,
-            'color' => $this->filamentColorToHex($items->sum('aggregate') < 0 ? Color::Red : Color::Lime)
+            'color' => $this->filamentColorToHex($items->sum('aggregate') < 0 ? Color::Red : Color::Lime),
         ]);
 
         Color::Red;
@@ -44,11 +44,11 @@ class MonthRevenue extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Balance',
-                    'data' => $data->map(fn($period) => $period['aggregate'])->values()->toArray(),
-                    'backgroundColor' => $data->map(fn($period) => $period['color'])->values()->toArray(),
+                    'data' => $data->map(fn ($period) => $period['aggregate'])->values()->toArray(),
+                    'backgroundColor' => $data->map(fn ($period) => $period['color'])->values()->toArray(),
                 ],
             ],
-            'labels' => $data->map(fn($period) => Carbon::parse($period['date'])->format('m/Y'))->values()->toArray(),
+            'labels' => $data->map(fn ($period) => Carbon::parse($period['date'])->format('m/Y'))->values()->toArray(),
         ];
 
         return $final;
@@ -80,12 +80,13 @@ class MonthRevenue extends ChartWidget
     private function filamentColorToHex(mixed $color)
     {
         $rgb = str($color['400'])->explode(',')->toArray();
-        return sprintf("#%02x%02x%02x", $rgb[0], $rgb[1], $rgb[2]);
+
+        return sprintf('#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2]);
     }
 
     protected function getOptions(): RawJs
     {
-        return RawJs::make(<<<JS
+        return RawJs::make(<<<'JS'
             {
                 'scales': {
                     y: {

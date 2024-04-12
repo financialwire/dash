@@ -4,14 +4,13 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Widgets;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use App\Filament\Widgets;
 use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -46,7 +45,7 @@ class DashPanelProvider extends PanelProvider
                 Widgets\TransactionsOverview::class,
                 Widgets\MonthRevenue::class,
                 Widgets\CategoriesChart::class,
-                Widgets\TodayTransactions::class
+                Widgets\TodayTransactions::class,
             ])
             ->middleware([
                 EncryptCookies::class,

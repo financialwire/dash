@@ -3,14 +3,12 @@
 namespace App\Filament\Resources\Transactions;
 
 use App\Filament\Resources\Transactions\CategoryResource\Pages;
-use App\Filament\Resources\Transactions\CategoryResource\RelationManagers;
 use App\Models\Transactions\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Guava\FilamentIconPicker\Forms\IconPicker;

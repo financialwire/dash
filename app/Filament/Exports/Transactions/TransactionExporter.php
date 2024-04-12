@@ -17,16 +17,16 @@ class TransactionExporter extends Exporter
         return [
             ExportColumn::make('transaction_type')
                 ->label('Tipo')
-                ->formatStateUsing(fn(TransactionType $state): ?string => $state->getLabel()),
+                ->formatStateUsing(fn (TransactionType $state): ?string => $state->getLabel()),
             ExportColumn::make('amount')
                 ->label('Total')
-                ->formatStateUsing(fn(?int $state): string => 'R$ ' . number_format($state / 100, 2, ',', '.')),
+                ->formatStateUsing(fn (?int $state): string => 'R$ ' . number_format($state / 100, 2, ',', '.')),
             ExportColumn::make('date')
                 ->label('Data')
-                ->formatStateUsing(fn(string $state): ?string => date('d/m/Y', strtotime($state))),
+                ->formatStateUsing(fn (string $state): ?string => date('d/m/Y', strtotime($state))),
             ExportColumn::make('finished')
                 ->label('Finalizada')
-                ->formatStateUsing(fn(bool $state): string => $state ? 'Sim' : 'Não'),
+                ->formatStateUsing(fn (bool $state): string => $state ? 'Sim' : 'Não'),
             ExportColumn::make('description')
                 ->label('Descrição'),
             ExportColumn::make('account.name')
@@ -35,10 +35,10 @@ class TransactionExporter extends Exporter
                 ->label('Categoria'),
             ExportColumn::make('created_at')
                 ->label('Criada em')
-                ->formatStateUsing(fn(string $state): ?string => date('d/m/Y H:i', strtotime($state))),
+                ->formatStateUsing(fn (string $state): ?string => date('d/m/Y H:i', strtotime($state))),
             ExportColumn::make('updated_at')
                 ->label('Atualizado em')
-                ->formatStateUsing(fn(string $state): ?string => date('d/m/Y H:i', strtotime($state))),
+                ->formatStateUsing(fn (string $state): ?string => date('d/m/Y H:i', strtotime($state))),
         ];
     }
 

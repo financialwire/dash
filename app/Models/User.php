@@ -15,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, HasUuids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
