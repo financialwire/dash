@@ -4,9 +4,9 @@ namespace App\Filament\Resources\Transactions\CategoryResource\Pages;
 
 use App\Filament\Resources\Transactions\CategoryResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListCategories extends ListRecords
+class ManageCategories extends ManageRecords
 {
     protected static string $resource = CategoryResource::class;
 

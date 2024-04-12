@@ -29,39 +29,38 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->columns(2)
+
+                Forms\Components\TextInput::make('name')
+                    ->label('Nome')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\ColorPicker::make('color')
+                    ->label('Cor')
+                    ->required(),
+
+                IconPicker::make('icon')
+                    ->label('Ícone')
+                    ->required()
+                    ->columnSpanFull()
+                    ->sets(['fontawesome-solid'])
+                    ->columns([
+                        'default' => 3,
+                        'xl' => 6,
+                    ]),
+
+                Forms\Components\Fieldset::make('Informações Adicionais')
+                    ->columns(3)
+                    ->hidden(fn (?Category $record): bool => $record === null)
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Nome')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\ColorPicker::make('color')
-                            ->label('Cor')
-                            ->required(),
-
-                        Forms\Components\ToggleButtons::make('icon')
-                            ->label('Ícone')
-                            ->required()
-                            ->inline()
-                            ->options(get_avaliable_icons())
-                            ->icons(get_avaliable_icons(icons: true))
-                            ->columnSpanFull(),
-
-                        Forms\Components\Fieldset::make('Informações Adicionais')
-                            ->columns(3)
-                            ->hidden(fn(?Category $record): bool => $record === null)
-                            ->schema([
-                                Forms\Components\Placeholder::make('created_at')
-                                    ->label('Criado em')
-                                    ->content(fn(Category $record): string => $record->created_at?->format('d/m/Y H:i') ?? 'Nunca'),
-                                Forms\Components\Placeholder::make('updated_at')
-                                    ->label('Atualizado em')
-                                    ->content(fn(Category $record): string => $record->updated_at?->format('d/m/Y H:i') ?? 'Nunca'),
-                                Forms\Components\Placeholder::make('deleted_at')
-                                    ->label('Excluído em')
-                                    ->content(fn(Category $record): string => $record->deleted_at?->format('d/m/Y H:i') ?? 'Nunca'),
-                            ])
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Criado em')
+                            ->content(fn (Category $record): string => $record->created_at?->format('d/m/Y H:i') ?? 'Nunca'),
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Atualizado em')
+                            ->content(fn (Category $record): string => $record->updated_at?->format('d/m/Y H:i') ?? 'Nunca'),
+                        Forms\Components\Placeholder::make('deleted_at')
+                            ->label('Excluído em')
+                            ->content(fn (Category $record): string => $record->deleted_at?->format('d/m/Y H:i') ?? 'Nunca'),
                     ])
             ]);
     }
@@ -69,7 +68,7 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn(Builder $query) => $query->where('user_id', auth()->user()->id))
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->defaultSort('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -77,8 +76,8 @@ class CategoryResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->icon(fn($record) => $record->icon)
-                    ->color(fn($record) => Color::hex($record->color)),
+                    ->icon(fn ($record) => $record->icon)
+                    ->color(fn ($record) => Color::hex($record->color)),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
                     ->dateTime('d/m/Y H:i')
@@ -100,6 +99,8 @@ class CategoryResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -109,19 +110,10 @@ class CategoryResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ManageCategories::route('/'),
         ];
     }
 
