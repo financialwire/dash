@@ -7,18 +7,18 @@ updates:
     directory: "/"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
+      interval: "daily"
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
     directory: "/"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
+      interval: "daily"
 
   # Maintain dependencies for Composer
   - package-ecosystem: "composer"
     directory: "/"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
+      interval: "daily"
