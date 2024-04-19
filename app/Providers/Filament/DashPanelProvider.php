@@ -31,7 +31,7 @@ class DashPanelProvider extends PanelProvider
             ->registration()
             ->passwordReset()
             ->profile(page: EditProfile::class, isSimple: false)
-            ->topNavigation()
+            ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
             ->colors([
                 'primary' => Color::Purple,
