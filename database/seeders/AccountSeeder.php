@@ -13,14 +13,6 @@ class AccountSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::first();
-
-        $name = 'Carteira';
-
-        Account::create([
-            'user_id' => $user->id,
-            'name' => $name,
-            'slug' => str($name)->slug(),
-        ]);
+        //
     }
 }
