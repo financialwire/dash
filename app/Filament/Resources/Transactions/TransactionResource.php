@@ -81,6 +81,7 @@ class TransactionResource extends Resource
 
                         Forms\Components\ToggleButtons::make('finished')
                             ->label('Recebida/Paga')
+                            ->required()
                             ->inline()
                             ->boolean(),
 

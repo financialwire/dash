@@ -20,7 +20,7 @@ class TransactionFactory extends Factory
         return [
             'transaction_type' => fake()->randomElement([TransactionType::Income, TransactionType::Expense]),
             'amount' => fake()->numberBetween(1000, 125000),
-            'date' => fake()->dateTimeBetween(now()->startOfYear(), now()->endOfYear()),
+            'date' => fake()->dateTimeBetween('-30 days', '+30 days'),
             'finished' => fake()->boolean(),
             'description' => fake()->realText(26),
         ];
