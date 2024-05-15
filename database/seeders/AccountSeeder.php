@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class AccountSeeder extends Seeder
@@ -11,6 +12,13 @@ class AccountSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $user = User::first();
+
+        $accountName = 'Carteira';
+
+        $user->accounts()->create([
+            'name' => $accountName,
+            'slug' => str($accountName)->slug(),
+        ]);
     }
 }
