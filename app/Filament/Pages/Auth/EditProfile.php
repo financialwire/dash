@@ -33,7 +33,6 @@ class EditProfile extends BasePage
 
                                 Forms\Components\FileUpload::make('avatar')
                                     ->label('Avatar')
-                                    ->required()
                                     ->avatar()
                                     ->image()
                                     ->imageEditor()
