@@ -48,6 +48,28 @@ class EditProfile extends BasePage
                                 $this->getPasswordFormComponent(),
                                 $this->getPasswordConfirmationFormComponent(),
                             ]),
+                            Forms\Components\Section::make('Perigo')
+                            ->description('Muito cuidado')
+                            ->icon('heroicon-o-exclamation-triangle')
+                            ->aside()
+                            ->schema([
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('deleteAccount')
+                                        ->label(__('Excluir conta'))
+                                        ->icon('heroicon-m-trash')
+                                        ->color('danger')
+                                        ->requiresConfirmation()
+                                        ->action(function () {
+                                            $user = auth()->user();
+
+                                            auth()->logout();
+
+                                            if ($user->delete()) {
+                                                return redirect(filament()->getLoginUrl());
+                                            }
+                                        }),
+                                ]),
+                            ])
                     ])
                     ->operation('edit')
                     ->model($this->getUser())
