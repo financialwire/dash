@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "aymanalhattami/filament-slim-scrollbar": "^2.0",
         "filament/filament": "^3.2",
         "guava/filament-icon-picker": "^2.0",
         "hydrat/filament-table-layout-toggle": "^1.2",
