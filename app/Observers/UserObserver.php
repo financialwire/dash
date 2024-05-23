@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Notifications\UserCreated;
+use Illuminate\Support\Facades\Notification;
 
 class UserObserver
 {
@@ -11,14 +13,24 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $accountName = 'Carteira';
+        $user->accounts()->create($this->getDefaultAccount());
 
-        $user->accounts()->create([
-            'name' => $accountName,
-            'slug' => str($accountName)->slug(),
-        ]);
+        $user->categories()->createMany($this->getDefaultCategories());
 
-        $user->categories()->createMany([
+        Notification::sendNow($user, new UserCreated($user));
+    }
+
+    protected function getDefaultAccount()
+    {
+        return [
+            'name' => 'Carteira',
+            'slug' => 'carteira',
+        ];
+    }
+
+    protected function getDefaultCategories()
+    {
+        return [
             [
                 'name' => 'Cartão de Crédito',
                 'slug' => 'cartao-de-credito',
@@ -43,6 +55,6 @@ class UserObserver
                 'icon' => 'fas-ellipsis-h',
                 'color' => fake()->hexColor(),
             ],
-        ]);
+        ];
     }
 }
