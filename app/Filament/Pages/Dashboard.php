@@ -23,6 +23,9 @@ class Dashboard extends BaseDashboard
         return $form
             ->schema([
                 Forms\Components\Section::make('Filtros')
+                    ->icon('heroicon-m-adjustments-horizontal')
+                    ->collapsible()
+                    ->collapsed()
                     ->columns(4)
                     ->iconSize(IconSize::Medium)
                     ->schema([

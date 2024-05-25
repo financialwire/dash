@@ -48,7 +48,7 @@ class EditProfile extends BasePage
                                 $this->getPasswordFormComponent(),
                                 $this->getPasswordConfirmationFormComponent(),
                             ]),
-                            Forms\Components\Section::make('Perigo')
+                        Forms\Components\Section::make('Perigo')
                             ->description('Muito cuidado')
                             ->icon('heroicon-o-exclamation-triangle')
                             ->aside()
@@ -69,7 +69,7 @@ class EditProfile extends BasePage
                                             }
                                         }),
                                 ]),
-                            ])
+                            ]),
                     ])
                     ->operation('edit')
                     ->model($this->getUser())

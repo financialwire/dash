@@ -31,6 +31,7 @@ class DashPanelProvider extends PanelProvider
             ->login()
             ->registration()
             ->passwordReset()
+            ->spa()
             ->profile(page: EditProfile::class, isSimple: false)
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
