@@ -1,8 +1,8 @@
 <?php
 
-use function Pest\Livewire\livewire;
 use Filament\Pages\Auth\Login;
-use Illuminate\Support\Facades\Http;
+
+use function Pest\Livewire\livewire;
 
 test('can render login page', function () {
     livewire(Login::class)

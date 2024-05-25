@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BoringAvatarsProvider implements Contracts\AvatarProvider
 {
-    public function get(Model | Authenticatable $record): string
+    public function get(Model|Authenticatable $record): string
     {
         $name = str(Filament::getNameForDefaultAvatar($record))
             ->trim()

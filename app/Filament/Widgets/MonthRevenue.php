@@ -21,7 +21,6 @@ class MonthRevenue extends ChartWidget
 
     protected function getData(): array
     {
-
         $startDate = $this->filters['startDate'] ?? now()->startOfMonth();
         $endDate = $this->filters['endDate'] ?? now()->endOfMonth();
         $accountId = $this->filters['accountId'] ?? null;
@@ -37,8 +36,6 @@ class MonthRevenue extends ChartWidget
             'aggregate' => $items->sum('aggregate') / 100,
             'color' => $this->filamentColorToHex($items->sum('aggregate') < 0 ? Color::Red : Color::Lime),
         ]);
-
-        Color::Red;
 
         $final = [
             'datasets' => [
@@ -92,9 +89,6 @@ class MonthRevenue extends ChartWidget
                     y: {
                         ticks: {
                             callback: function(tooltipItem, chart){
-
-                                // console.log(tooltipItem)
-
                                 return Intl.NumberFormat('pt-BR', {
                                     style: 'currency',
                                     currency: 'BRL',
