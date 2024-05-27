@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Guava\FilamentIconPicker\Forms\IconPicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rules\Unique;
 
 class CategoryResource extends Resource
 {
@@ -32,7 +33,11 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Nome')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(modifyRuleUsing: function (Unique $rule, $state) {
+                        return $rule->where('slug', str($state)->slug())
+                            ->where('user_id', auth()->user()->id);
+                    }),
                 Forms\Components\ColorPicker::make('color')
                     ->label('Cor')
                     ->required(),
