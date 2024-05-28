@@ -7,7 +7,9 @@ use App\Models\Transactions\Account;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Table;
 
 class AccountResource extends Resource
@@ -48,24 +50,34 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nome')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Criado em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Atualizado em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
+                Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\TextColumn::make('name')
+                        ->label('Nome')
+                        ->searchable()
+                        ->size(TextColumnSize::Large)
+                        ->weight(FontWeight::SemiBold),
+                ])->space(2),
             ])
-            ->filters([
-                //
+            ->contentGrid([
+                'md' => 4,
             ])
+            ->paginated([
+                12,
+                24,
+                36,
+                'all',
+            ])
+            ->actionsAlignment('right')
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->badge()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['slug'] = str($data['name'])->slug();
+
+                        return $data;
+                    }),
+                Tables\Actions\DeleteAction::make()
+                    ->badge(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
