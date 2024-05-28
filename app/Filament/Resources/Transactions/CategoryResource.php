@@ -92,7 +92,12 @@ class CategoryResource extends Resource
             ->actionsAlignment('right')
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->badge(),
+                    ->badge()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['slug'] = str($data['name'])->slug();
+
+                        return $data;
+                    }),
                 Tables\Actions\DeleteAction::make()
                     ->badge(),
                 Tables\Actions\ActionGroup::make([
