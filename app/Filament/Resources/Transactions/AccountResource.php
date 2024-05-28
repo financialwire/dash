@@ -7,9 +7,11 @@ use App\Models\Transactions\Account;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use Guava\FilamentIconPicker\Forms\IconPicker;
 
 class AccountResource extends Resource
 {
@@ -31,6 +33,15 @@ class AccountResource extends Resource
                     ->required()
                     ->maxLength(255),
 
+                IconPicker::make('icon')
+                    ->label('Ícone')
+                    ->columnSpanFull()
+                    ->sets(['fontawesome-solid'])
+                    ->columns([
+                        'default' => 3,
+                        'xl' => 6,
+                    ]),
+
                 Forms\Components\Fieldset::make('Informações Adicionais')
                     ->hidden(fn (?Account $record): bool => is_null($record))
                     ->columns(2)
@@ -48,26 +59,36 @@ class AccountResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nome')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Criado em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Atualizado em')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
+                Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\TextColumn::make('name')
+                        ->label('Nome')
+                        ->searchable()
+                        ->size(TextColumnSize::Large)
+                        ->weight(FontWeight::SemiBold)
+                        ->icon(fn (Account $record): ?string => $record->icon),
+                ])->space(2),
             ])
-            ->filters([
-                //
+            ->contentGrid([
+                'md' => 4,
             ])
+            ->paginated([
+                12,
+                24,
+                36,
+                'all',
+            ])
+            ->actionsAlignment('right')
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->badge()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['slug'] = str($data['name'])->slug();
+
+                        return $data;
+                    }),
+                Tables\Actions\DeleteAction::make()
+                    ->badge(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,6 +106,6 @@ class AccountResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('user_id', auth()->user()->id)->count();
+        return static::getModel()::count();
     }
 }

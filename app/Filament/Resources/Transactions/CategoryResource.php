@@ -35,8 +35,7 @@ class CategoryResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->unique(modifyRuleUsing: function (Unique $rule, $state) {
-                        return $rule->where('slug', str($state)->slug())
-                            ->where('user_id', auth()->user()->id);
+                        return $rule->where('slug', str($state)->slug());
                     }),
                 Forms\Components\ColorPicker::make('color')
                     ->label('Cor')
@@ -57,7 +56,6 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->defaultSort('name')
             ->columns([
                 Tables\Columns\Layout\Stack::make([
@@ -133,6 +131,6 @@ class CategoryResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('user_id', auth()->user()->id)->count();
+        return static::getModel()::count();
     }
 }

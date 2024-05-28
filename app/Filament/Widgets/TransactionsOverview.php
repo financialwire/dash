@@ -39,8 +39,7 @@ class TransactionsOverview extends BaseWidget
 
     private function getTransactions($startDate, $endDate, bool $preview, TransactionType $transactionType): Builder
     {
-        $query = Transaction::where('user_id', auth()->user()->id)
-            ->where('transaction_type', $transactionType)
+        $query = Transaction::where('transaction_type', $transactionType)
             ->whereBetween('date', [$startDate, $endDate]);
 
         if (!$preview) {
