@@ -21,6 +21,7 @@ class Account extends Model
         'user_id',
         'name',
         'slug',
+        'icon',
     ];
 
     public function users(): BelongsTo

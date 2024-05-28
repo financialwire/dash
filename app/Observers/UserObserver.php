@@ -25,6 +25,7 @@ class UserObserver
         return [
             'name' => 'Carteira',
             'slug' => 'carteira',
+            'icon' => 'fas-wallet',
         ];
     }
 

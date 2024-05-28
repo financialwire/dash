@@ -11,6 +11,7 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Table;
+use Guava\FilamentIconPicker\Forms\IconPicker;
 
 class AccountResource extends Resource
 {
@@ -31,6 +32,15 @@ class AccountResource extends Resource
                     ->label('Nome')
                     ->required()
                     ->maxLength(255),
+
+                IconPicker::make('icon')
+                    ->label('Ícone')
+                    ->columnSpanFull()
+                    ->sets(['fontawesome-solid'])
+                    ->columns([
+                        'default' => 3,
+                        'xl' => 6,
+                    ]),
 
                 Forms\Components\Fieldset::make('Informações Adicionais')
                     ->hidden(fn (?Account $record): bool => is_null($record))
@@ -55,7 +65,8 @@ class AccountResource extends Resource
                         ->label('Nome')
                         ->searchable()
                         ->size(TextColumnSize::Large)
-                        ->weight(FontWeight::SemiBold),
+                        ->weight(FontWeight::SemiBold)
+                        ->icon(fn (Account $record): ?string => $record->icon),
                 ])->space(2),
             ])
             ->contentGrid([
