@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class AccountResource extends Resource
 {
@@ -48,7 +47,6 @@ class AccountResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome')
@@ -85,6 +83,6 @@ class AccountResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('user_id', auth()->user()->id)->count();
+        return static::getModel()::count();
     }
 }

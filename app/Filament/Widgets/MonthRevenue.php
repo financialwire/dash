@@ -59,7 +59,6 @@ class MonthRevenue extends ChartWidget
                 YEAR(`date`) AS `year`, 
                 MONTH(`date`) AS `month`
             ")
-            ->where('user_id', auth()->user()->id)
             ->where('transaction_type', $transactionType)
             ->whereBetween('date', [$startDate, $endDate]);
 

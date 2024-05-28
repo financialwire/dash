@@ -21,8 +21,7 @@ class TodayTransactions extends BaseWidget
     {
         return $table
             ->query(
-                Transaction::where('user_id', auth()->user()->id)
-                    ->whereDate('created_at', now()->today()->toDateString())
+                Transaction::whereDate('created_at', now()->today()->toDateString())
                     ->orderByDesc('created_at')
                     ->limit(5)
             )

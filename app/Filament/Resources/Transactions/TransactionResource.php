@@ -42,8 +42,6 @@ class TransactionResource extends Resource
                             ->relationship(
                                 name: 'account',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query
-                                    ->where('user_id', auth()->user()->id)
                             )
                             ->native(false)
                             ->required(),
@@ -52,8 +50,6 @@ class TransactionResource extends Resource
                             ->relationship(
                                 name: 'category',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query
-                                    ->where('user_id', auth()->user()->id)
                             )
                             ->native(false)
                             ->required(),
@@ -114,7 +110,6 @@ class TransactionResource extends Resource
         $livewire = $table->getLivewire();
 
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', auth()->user()->id))
             ->defaultSort('date', 'desc')
             ->defaultGroup('date')
             ->columns(
@@ -145,21 +140,13 @@ class TransactionResource extends Resource
 
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Categorias')
-                    ->relationship(
-                        name: 'category',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn ($query) => $query->where('user_id', auth()->user()->id)
-                    )
+                    ->relationship(name: 'category', titleAttribute: 'name')
                     ->multiple()
                     ->preload(),
 
                 Tables\Filters\SelectFilter::make('account_id')
                     ->label('Contas')
-                    ->relationship(
-                        name: 'account',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn ($query) => $query->where('user_id', auth()->user()->id)
-                    )
+                    ->relationship(name: 'account', titleAttribute: 'name')
                     ->multiple()
                     ->preload(),
 
@@ -325,6 +312,6 @@ class TransactionResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('user_id', auth()->user()->id)->count();
+        return static::getModel()::count();
     }
 }
