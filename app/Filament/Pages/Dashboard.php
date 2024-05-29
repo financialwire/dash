@@ -10,11 +10,14 @@ use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\IconSize;
+use JibayMcs\FilamentTour\Tour\HasTour;
+use JibayMcs\FilamentTour\Tour\Step;
+use JibayMcs\FilamentTour\Tour\Tour;
 use Livewire\Component as Livewire;
 
 class Dashboard extends BaseDashboard
 {
-    use HasFiltersForm;
+    use HasFiltersForm, HasTour;
 
     protected static ?string $navigationIcon = 'heroicon-m-home';
 
@@ -83,5 +86,43 @@ class Dashboard extends BaseDashboard
     public function getColumns(): int|string|array
     {
         return 3;
+    }
+
+    public function tours(): array
+    {
+        return [
+            Tour::make('dashboard')
+                ->colors(light: '#000', dark: '#000')
+                ->steps(
+                    Step::make()
+                        ->title('Bem-vindo(a) ao Financialwire!')
+                        ->description('Vamos fazer um pequeno tour para você se familiarizar com a plataforma.'),
+
+                    Step::make('.fi-avatar')
+                        ->title('Wow! Aqui está seu avatar!')
+                        ->description('You look nice!')
+                        ->icon('heroicon-m-user-circle'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(1)')
+                        ->title('Painel de Controle')
+                        ->description('Texto explicativo sobre a dashboard')
+                        ->icon('heroicon-m-home'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(2)')
+                        ->title('Contas')
+                        ->description('Texto explicativo sobre as contas')
+                        ->icon('heroicon-m-wallet'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(3)')
+                        ->title('Categorias')
+                        ->description('Texto explicativo sobre as categorias')
+                        ->icon('heroicon-m-bookmark'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(4)')
+                        ->title('Transações')
+                        ->description('Texto explicativo sobre as transações')
+                        ->icon('heroicon-m-banknotes'),
+                ),
+        ];
     }
 }

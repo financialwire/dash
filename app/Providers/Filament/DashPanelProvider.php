@@ -20,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use JibayMcs\FilamentTour\FilamentTourPlugin;
 
 class DashPanelProvider extends PanelProvider
 {
@@ -71,6 +72,8 @@ class DashPanelProvider extends PanelProvider
                     ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)
                     ->listLayoutButtonIcon('heroicon-o-list-bullet')
                     ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
+                FilamentTourPlugin::make()
+                    ->onlyVisibleOnce(false),
             ]);
     }
 }
