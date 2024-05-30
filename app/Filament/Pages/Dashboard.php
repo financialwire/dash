@@ -122,6 +122,16 @@ class Dashboard extends BaseDashboard
                         ->title('Transações')
                         ->description('Texto explicativo sobre as transações')
                         ->icon('heroicon-m-banknotes'),
+
+                    Step::make('section.flex.flex-col.gap-y-8.py-8')
+                        ->title('Dashboard')
+                        ->description('Texto explicativo sobre os gráficos e filtros')
+                        ->icon('heroicon-m-presentation-chart-line'),
+
+                    Step::make('header.fi-section-header')
+                        ->title('Filtros')
+                        ->description('Texto explicativo os filtros')
+                        ->icon('heroicon-m-adjustments-horizontal'),
                 ),
         ];
     }
