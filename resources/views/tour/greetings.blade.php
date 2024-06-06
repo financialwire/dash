@@ -5,6 +5,6 @@
             formulário
         </a>
     </p>
-    <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTdhOHZicXlxcDYyZjRmd3QxZ2hjYWZidmFwNHZncHduZWt1MXZ6ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5K7ngCtszoxxbaBieC/giphy.webp"
+    <img src="{{ asset('images/giphy.webp') }}"
         alt="Dancing squirrel" style="max-width: 16rem; margin: auto;">
 </div>
