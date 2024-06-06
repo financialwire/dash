@@ -10,11 +10,16 @@ use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\IconSize;
+use JibayMcs\FilamentTour\Tour\HasTour;
+use JibayMcs\FilamentTour\Tour\Step;
+use JibayMcs\FilamentTour\Tour\Tour;
 use Livewire\Component as Livewire;
 
 class Dashboard extends BaseDashboard
 {
-    use HasFiltersForm;
+    use HasFiltersForm, HasTour;
+
+    protected static ?string $title = 'Dashboard';
 
     protected static ?string $navigationIcon = 'heroicon-m-home';
 
@@ -83,5 +88,52 @@ class Dashboard extends BaseDashboard
     public function getColumns(): int|string|array
     {
         return 3;
+    }
+
+    public function tours(): array
+    {
+        return [
+            Tour::make('dashboard')
+                ->colors(light: '#000', dark: '#000')
+                ->steps(
+                    Step::make()
+                        ->title('Bem-vindo(a) ao Financialwire!')
+                        ->description('Vamos fazer um pequeno tour para você se familiarizar com a plataforma.'),
+
+                    Step::make('.fi-avatar')
+                        ->title('Perfil')
+                        ->description('Personalize seu perfil e edite seus dados')
+                        ->icon('heroicon-m-user-circle'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(2)')
+                        ->title('Contas')
+                        ->description('Crie suas contas, como conta corrente, conta poupança etc.')
+                        ->icon('heroicon-m-wallet'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(3)')
+                        ->title('Categorias')
+                        ->description('Crie categorias para organizar as suas transações')
+                        ->icon('heroicon-m-bookmark'),
+
+                    Step::make('.fi-sidebar-group-items li:nth-child(4)')
+                        ->title('Transações')
+                        ->description('Registre seus ganhos e despesas para salvar na sua dashboard')
+                        ->icon('heroicon-m-banknotes'),
+
+                    Step::make('section.flex.flex-col.gap-y-8.py-8 :nth-child(2)')
+                        ->title('Dashboard')
+                        ->description('Resumo da sua vida financeira com gráficos dinâmicos')
+                        ->icon('heroicon-m-presentation-chart-line'),
+
+                    Step::make('header.fi-section-header')
+                        ->title('Filtros')
+                        ->description('Visualize suas finanças de acordo com a data que você deseja')
+                        ->icon('heroicon-m-adjustments-horizontal'),
+
+                    Step::make()
+                        ->title('Fim!')
+                        ->description(view('tour.greetings'))
+                ),
+        ];
     }
 }

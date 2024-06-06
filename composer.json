@@ -13,6 +13,7 @@
         "filament/filament": "^3.2",
         "guava/filament-icon-picker": "^2.0",
         "hydrat/filament-table-layout-toggle": "^1.2",
+        "jibaymcs/filament-tour": "^3.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "leandrocfe/filament-ptbr-form-fields": "^3.0",
