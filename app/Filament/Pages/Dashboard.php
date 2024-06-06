@@ -19,6 +19,8 @@ class Dashboard extends BaseDashboard
 {
     use HasFiltersForm, HasTour;
 
+    protected static ?string $title = 'Dashboard';
+
     protected static ?string $navigationIcon = 'heroicon-m-home';
 
     public function filtersForm(Form $form): Form
@@ -99,39 +101,38 @@ class Dashboard extends BaseDashboard
                         ->description('Vamos fazer um pequeno tour para você se familiarizar com a plataforma.'),
 
                     Step::make('.fi-avatar')
-                        ->title('Wow! Aqui está seu avatar!')
-                        ->description('You look nice!')
+                        ->title('Perfil')
+                        ->description('Personalize seu perfil e edite seus dados')
                         ->icon('heroicon-m-user-circle'),
-
-                    Step::make('.fi-sidebar-group-items li:nth-child(1)')
-                        ->title('Painel de Controle')
-                        ->description('Texto explicativo sobre a dashboard')
-                        ->icon('heroicon-m-home'),
 
                     Step::make('.fi-sidebar-group-items li:nth-child(2)')
                         ->title('Contas')
-                        ->description('Texto explicativo sobre as contas')
+                        ->description('Crie suas contas, como conta corrente, conta poupança etc.')
                         ->icon('heroicon-m-wallet'),
 
                     Step::make('.fi-sidebar-group-items li:nth-child(3)')
                         ->title('Categorias')
-                        ->description('Texto explicativo sobre as categorias')
+                        ->description('Crie categorias para organizar as suas transações')
                         ->icon('heroicon-m-bookmark'),
 
                     Step::make('.fi-sidebar-group-items li:nth-child(4)')
                         ->title('Transações')
-                        ->description('Texto explicativo sobre as transações')
+                        ->description('Registre seus ganhos e despesas para salvar na sua dashboard')
                         ->icon('heroicon-m-banknotes'),
 
-                    Step::make('section.flex.flex-col.gap-y-8.py-8')
+                    Step::make('section.flex.flex-col.gap-y-8.py-8 :nth-child(2)')
                         ->title('Dashboard')
-                        ->description('Texto explicativo sobre os gráficos e filtros')
+                        ->description('Resumo da sua vida financeira com gráficos dinâmicos')
                         ->icon('heroicon-m-presentation-chart-line'),
 
                     Step::make('header.fi-section-header')
                         ->title('Filtros')
-                        ->description('Texto explicativo os filtros')
+                        ->description('Visualize suas finanças de acordo com a data que você deseja')
                         ->icon('heroicon-m-adjustments-horizontal'),
+
+                    Step::make()
+                        ->title('Fim!')
+                        ->description(view('tour.greetings'))
                 ),
         ];
     }

@@ -72,8 +72,7 @@ class DashPanelProvider extends PanelProvider
                     ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)
                     ->listLayoutButtonIcon('heroicon-o-list-bullet')
                     ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
-                FilamentTourPlugin::make()
-                    ->onlyVisibleOnce(false),
+                FilamentTourPlugin::make(),
             ]);
     }
 }
